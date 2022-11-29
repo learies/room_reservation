@@ -50,6 +50,7 @@ class ReservationDB(ReservationBase):
     """Схема для возвращаемого объекта."""
     id: int
     meetingroom_id: int
+    user_id: None | int
 
     class Config:
         orm_mode = True
