@@ -1,0 +1,5 @@
+fastapi[all]>=0.100,<0.110
+fastapi-users[sqlalchemy]>=12.1,<12.2
+asyncpg>=0.28,<0.29
+alembic>=1.11,<1.12
+greenlet>=2.0,<2.1
