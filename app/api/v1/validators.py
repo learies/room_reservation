@@ -8,7 +8,7 @@ from app.models import MeetingRoom
 async def check_name_duplicate(
     room_name: str,
     session: AsyncSession,
-) -> None:
+) -> MeetingRoom | None:
     """Проверяет, наличие переговорки с таким же именем.
 
     Args:
@@ -19,17 +19,18 @@ async def check_name_duplicate(
         HTTPException: Если переговорка с таким именем уже существует.
 
     Returns:
-        None
+        MeetingRoom | None: Объект переговорки.
     """
-    room_id = await meeting_room_crud.get_room_id_by_name(
+    meeting_room = await meeting_room_crud.get_room_by_name(
         room_name,
         session,
     )
-    if room_id:
+    if meeting_room and meeting_room.is_active:
         raise HTTPException(
             status_code=422,
             detail="Переговорка с таким именем уже существует!",
         )
+    return meeting_room
 
 
 async def check_meeting_room_exists(

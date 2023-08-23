@@ -74,20 +74,35 @@ async def create_new_meeting_room(
     meeting_room: MeetingRoomCreate,
     session: AsyncSession = Depends(get_async_session),
 ) -> MeetingRoom:
-    """Создать переговорку.
+    """Создать переговорку или восстановить удалённую.
 
     Args:
-        meeting_room (MeetingRoomCreate): Данные для новой переговорки.
+        meeting_room (MeetingRoomCreate): Данные по переговорке.
         session (AsyncSession): Сессия базы данных.
 
     Raises:
         HTTPException: Если переговорка с таким именем уже существует.
 
     Returns:
-        MeetingRoom: Объект созданной переговорки.
+        MeetingRoom: Объект переговорки.
     """
-    await check_name_duplicate(meeting_room.name, session)
-    new_room = await meeting_room_crud.create(meeting_room, session)
+    deleted_meeting_room = await check_name_duplicate(
+        meeting_room.name,
+        session,
+    )
+
+    if deleted_meeting_room:
+        restore_room = await meeting_room_crud.restore(
+            deleted_meeting_room,
+            meeting_room,
+            session,
+        )
+        return restore_room
+
+    new_room = await meeting_room_crud.create(
+        meeting_room,
+        session,
+    )
     return new_room
 
 

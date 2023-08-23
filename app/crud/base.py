@@ -117,3 +117,32 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         await session.commit()
         await session.refresh(db_obj)
         return db_obj
+
+    async def restore(
+        self,
+        db_obj: ModelType,
+        obj_in: UpdateSchemaType,
+        session: AsyncSession,
+    ) -> ModelType:
+        """Восстановить удалённый объект.
+
+        Args:
+            db_obj (ModelType): Объект для восстановления.
+            obj_in (UpdateSchemaType): Входные данные для обновления.
+            session (AsyncSession): Сессия базы данных.
+
+        Returns:
+            ModelType: Восстановленный объект.
+        """
+        obj_data = jsonable_encoder(db_obj)
+        restore_data = obj_in.model_dump(exclude_unset=True)
+
+        for field in obj_data:
+            if field in restore_data:
+                setattr(db_obj, field, restore_data[field])
+
+        db_obj.is_active = True
+        session.add(db_obj)
+        await session.commit()
+        await session.refresh(db_obj)
+        return db_obj

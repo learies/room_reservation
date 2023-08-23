@@ -63,5 +63,26 @@ class CRUDMeetingRoom(
         )
         return db_room_id.first()
 
+    async def get_room_by_name(
+        self,
+        room_name: str,
+        session: AsyncSession,
+    ) -> MeetingRoom | None:
+        """Получить переговорку по названию.
+
+        Args:
+            room_name (str): Название переговорки.
+            session (AsyncSession): Сессия базы данных.
+
+        Returns:
+            MeetingRoom | None: Объект переговорки.
+        """
+        meeting_room = await session.scalars(
+            select(self.model).where(
+                self.model.name == room_name,
+            )
+        )
+        return meeting_room.first()
+
 
 meeting_room_crud = CRUDMeetingRoom(MeetingRoom)
