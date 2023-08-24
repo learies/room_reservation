@@ -23,7 +23,7 @@ class MeetingRoomCreate(MeetingRoomBase):
     name: str = Field(..., min_length=1, max_length=100)
 
 
-class MeetingRoomUpdate(MeetingRoomCreate):
+class MeetingRoomUpdate(MeetingRoomBase):
     """Схема обновления переговорки.
 
     Args:
