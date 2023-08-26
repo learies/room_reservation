@@ -1,5 +1,0 @@
-flake8
-isort
-black
-pytest
-pytest_asyncio
