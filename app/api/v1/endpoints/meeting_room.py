@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.v1.validators import (
@@ -69,6 +69,7 @@ async def get_meeting_room_by_id(
     "/",
     response_model=MeetingRoomResponse,
     response_model_exclude_none=True,
+    status_code=status.HTTP_201_CREATED,
 )
 async def create_new_meeting_room(
     meeting_room: MeetingRoomCreate,
