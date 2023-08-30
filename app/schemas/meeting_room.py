@@ -46,5 +46,5 @@ class MeetingRoomResponse(MeetingRoomBase):
 
     id: int
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
