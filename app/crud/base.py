@@ -30,13 +30,13 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             list[ModelType]: Список объектов.
         """
         db_objs = await session.scalars(select(self.model))
-        return db_objs.all()
+        return list(db_objs.all())
 
     async def get_by_id(
         self,
         obj_id: int,
         session: AsyncSession,
-    ) -> ModelType:
+    ) -> ModelType | None:
         """Получить объект по идентификатору id.
 
         Args:
@@ -46,8 +46,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         Returns:
             ModelType: Полученный объект.
         """
-        db_obj = await session.get(self.model, obj_id)
-        return db_obj
+        return await session.get(self.model, obj_id)
 
     async def create(
         self,
@@ -89,9 +88,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj_data = jsonable_encoder(db_obj)
         update_data = obj_in.model_dump(exclude_unset=True)
 
-        for field in obj_data:
-            if field in update_data:
-                setattr(db_obj, field, update_data[field])
+        for field, value in update_data.items():
+            setattr(db_obj, field, value)
 
         session.add(db_obj)
         await session.commit()
@@ -137,9 +135,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj_data = jsonable_encoder(db_obj)
         restore_data = obj_in.model_dump(exclude_unset=True)
 
-        for field in obj_data:
-            if field in restore_data:
-                setattr(db_obj, field, restore_data[field])
+        for field, value in restore_data.items():
+            setattr(db_obj, field, value)
 
         db_obj.is_active = True
         session.add(db_obj)
