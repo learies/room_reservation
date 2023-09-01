@@ -40,7 +40,7 @@ class CRUDMeetingRoom(
                 self.model.is_active.is_(True),
             )
         )
-        return db_objs.all()
+        return list(db_objs.all())
 
     async def get_room_id_by_name(
         self,
