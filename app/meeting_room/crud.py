@@ -3,9 +3,9 @@ from dataclasses import dataclass
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.crud.base import CRUDBase
-from app.models.meeting_room import MeetingRoom
-from app.schemas.meeting_room import MeetingRoomCreate, MeetingRoomUpdate
+from app.core.crud import CRUDBase
+from app.meeting_room.models import MeetingRoom
+from app.meeting_room.schemas import MeetingRoomCreate, MeetingRoomUpdate
 
 
 @dataclass

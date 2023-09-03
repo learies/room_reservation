@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.v1.validators import (
+from app.meeting_room.api.v1.validators import (
     check_meeting_room_exists,
     check_name_duplicate,
 )
 from app.core.db import get_async_session
-from app.crud import meeting_room_crud
-from app.models.meeting_room import MeetingRoom
-from app.schemas.meeting_room import (
+from app.meeting_room.crud import meeting_room_crud
+from app.meeting_room.models import MeetingRoom
+from app.meeting_room.schemas import (
     MeetingRoomCreate,
     MeetingRoomResponse,
     MeetingRoomUpdate,

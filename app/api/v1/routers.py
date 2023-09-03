@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import meeting_room_router
+from app.meeting_room.api.v1 import meeting_room_router
 
 main_router = APIRouter(prefix="/api/v1")
 main_router.include_router(

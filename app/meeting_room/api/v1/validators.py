@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.crud.meeting_room import meeting_room_crud
-from app.models import MeetingRoom
+from app.meeting_room.crud import meeting_room_crud
+from app.meeting_room.models import MeetingRoom
 
 
 async def check_name_duplicate(
