@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Generic, Type, TypeVar
 
-from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -85,7 +84,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         Returns:
             ModelType: Обновленный объект.
         """
-        obj_data = jsonable_encoder(db_obj)
         update_data = obj_in.model_dump(exclude_unset=True)
 
         for field, value in update_data.items():
@@ -132,7 +130,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         Returns:
             ModelType: Восстановленный объект.
         """
-        obj_data = jsonable_encoder(db_obj)
         restore_data = obj_in.model_dump(exclude_unset=True)
 
         for field, value in restore_data.items():
